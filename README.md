@@ -99,30 +99,52 @@ save_model(best, 'best_model')
 #### Clustering
 ```python
 import pandas as pd
-from pycaret.classification import *
+from pycaret.clustering import *
 
 # load dataset
-train = pd.read_csv('train.csv')
-test = pd.read_csv('test.csv')
+data = pd.read_csv('data.csv')
 
 # init setup
-s = setup(train, target = 'target')
+s = setup(data, normalize=True)
 
-# model training and selection
-best = compare_models()
+# train K-means model
+best = creat_model('kmeans')
 
-# analyze best model
-evaluate_model(best)
+# assign cluster labels on training data
+kmeans_results = assign_model(best)
 
-# predict on new data
-predictions = predict_model(best, data = test)
+# assign cluster labels on enw data
+new_data = pd.read_csv('new_data.csv')
+predictions = predict_model(best, data=new_data)
 
 # save best pipeline
 save_model(best, 'best_model')
 ```
 
 #### Anomaly Detection
-![](https://github.com/pycaret/pycaret/raw/master/docs/images/pycaret_anomaly.png)
+```python
+import pandas as pd
+from pycaret.anomaly import *
+
+# load dataset
+data = pd.read_csv('data.csv')
+
+# init setup
+s = setup(train, normalize = True)
+
+# train isolation forest model
+best = create_model('iforest')
+
+# assign anomaly labels on training data
+iforest_results = assign_model(iforest)
+
+# assign anomaly labels on new data
+new_data = pd.read_csv('new_data.csv')
+predictions = predict_model(best, data=new_data)
+
+# save best pipeline
+save_model(best, 'best_model')
+```
 
 
 ## Contributing
